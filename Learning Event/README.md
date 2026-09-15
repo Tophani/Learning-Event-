@@ -1,11 +1,9 @@
-# Learning Event Registration (v2 — mirrors TMF's staff dashboard)
+# Learning Event Registration
 
 Attendee import & check-in tool for the in-house learning event.
-Structured after TMF's real staff dashboard (card-style attendee rows,
-staff password login, orange/red brand palette) but stripped down to what
-this event actually needs: **import a list, search it, check people in.**
-No self-registration, no delegate/exhibitor/media categories, no
-signature or bank-account verification.
+Staff password login.
+Import a list, search it, and check people in.
+No self-registration
 
 ## What's inside
 
@@ -37,8 +35,7 @@ Environment variables:
 
 ## Deploying
 
-Same shape as before: copy the folder to your server, `npm install
---production`, run it under a process manager (pm2 / systemd), and put it
+Same shape as before: copy the folder to your server, `npm install--production`, run it under a process manager (pm2 / systemd), and put it
 behind Nginx or point a subdomain at it. Back up `data.db` regularly —
 it's the only copy of the attendee list.
 
