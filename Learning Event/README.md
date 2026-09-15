@@ -1,73 +1,207 @@
 # Learning Event Registration
 
-Attendee import & check-in tool for the in-house learning event.
-Staff password login.
-Import a list, search it, and check people in.
-No self-registration
+An internal attendee management and check-in system for in-house learning events.
 
-## What's inside
+The application allows  staff to securely access a check-in dashboard, manage attendee records, import existing registration lists, search for attendees, and record attendance.
 
-- `server.js` — reference Node.js/Express backend (SQLite, JWT login).
-  Fully working — you can run this as your real backend or replace it.
-- `public/login.html` — staff password login screen.
-- `public/index.html` — the main dashboard.
-- `API_CONTRACT.md` — **read this first if you're building your own
-  backend.** It documents every endpoint the frontend expects, with exact
-  request/response shapes, independent of whether you use this reference
-  server or write your own.
 
-## Running it locally
+## Features
+
+* **Staff Login** — Secure staff access using a shared password and JWT authentication.
+* **Add Attendees** — Manually add an attendee if they are not already on the imported list.
+* **Import Attendee Lists** — Import attendees from `.xlsx` or `.csv` files, or paste attendee data directly.
+* **Search & Filter** — Search attendees by name, phone number, or email and filter by check-in status.
+* **Check-In** — Mark attendees as checked in directly from the dashboard.
+* **Export Attendee List** — Download the current attendee list as an `.xlsx` file.
+* **Capacity Management** — Set an attendee capacity limit, enforced both on the frontend and backend.
+* **Duplicate Prevention** — Duplicate phone numbers are automatically skipped during imports.
+
+
+
+## Project Structure
+
+```
+.
+├── server.js              # Node.js/Express backend
+├── public/
+│   ├── login.html         # Staff login page
+│   └── index.html         # Main staff dashboard
+├── API_CONTRACT.md        # API specification for frontend/backend integration
+└── package.json
+```
+
+### `server.js`
+
+
+
+### `public/login.html`
+
+The staff login page used to authenticate users before accessing the check-in dashboard.
+
+### `public/index.html`
+
+The main dashboard where staff can:
+
+* View attendees
+* Search and filter the attendee list
+* Add attendees
+* Import attendee lists
+* Check attendees in
+* Export the current list
+
+### `API_CONTRACT.md`
+
+Documents the API endpoints expected by the frontend, including the required request and response formats.
+
+Read this file first if you intend to build or replace the backend.
+
+---
+
+## Running Locally
+
+### 1. Install dependencies
 
 ```bash
 npm install
+```
+
+### 2. Start the application
+
+For testing, the default staff password is:
+
+```text
+test1234
+```
+
+You can also specify your own password:
+
+```bash
 STAFF_PASSWORD=your-chosen-password npm start
 ```
 
-Open http://localhost:3000 — it'll redirect you to the login page first.
+### 3. Open the application
 
-Environment variables:
-- `STAFF_PASSWORD` — the shared password for the check-in desk (defaults
-  to `changeme` if unset — **do not deploy with the default**).
-- `JWT_SECRET` — secret used to sign login tokens (defaults to a
-  placeholder — **set a real one before deploying**).
-- `PORT` — defaults to 3000.
-- `DB_PATH` — where the SQLite file lives (defaults to `./data.db`).
+Once the server is running, open:
 
-## Deploying
-
-Same shape as before: copy the folder to your server, `npm install--production`, run it under a process manager (pm2 / systemd), and put it
-behind Nginx or point a subdomain at it. Back up `data.db` regularly —
-it's the only copy of the attendee list.
-
-Example Nginx snippet:
-```nginx
-location /staff {
-    proxy_pass http://127.0.0.1:3000;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-}
+```text
+http://localhost:3000
 ```
 
-## Frontend features
+You will be redirected to the staff login page.
 
-- **Staff login** — shared password, JWT stored in `localStorage`,
-  auto-redirects to login on any `401`.
-- **Import List** — either upload a `.xlsx`/`.csv` file (parsed in the
-  browser via SheetJS, no backend file-handling needed) or paste rows
-  directly. Both feed the same `/api/staff/attendees/import` endpoint.
-  Duplicate phone numbers are skipped automatically.
-- **Export** — one click, downloads the current list as `.xlsx`.
-- **Search & filter** — by name, phone, or email; filter by checked-in
-  status.
-- **Capacity bar** — editable cap (defaults to 140), enforced both in the
-  UI and server-side on add/import.
-- **Card-style attendee rows** — mirrors the visual structure of TMF's
-  real dashboard.
+### Test Credentials
 
-## Things to decide before go-live
+For local testing:
 
-- **Change `STAFF_PASSWORD` and `JWT_SECRET`** away from the defaults.
-- **No audit log** — the database doesn't record who made each change,
-  only current state.
-- **One shared password**, not per-staff accounts. Fine for a single
-  booth; say the word if you want individual logins instead.
+```text
+Password: test1234
+```
+
+> **Security:** `test1234` is a test password only. Change it before deploying the application to a live environment.
+
+---
+
+## Environment Variables
+
+The application supports the following environment variables:
+
+Variable         Description                               Default           
+
+ `STAFF_PASSWORD`  Shared password used by event staff        `changeme`        
+ `JWT_SECRET`      Secret used to sign authentication tokens  Placeholder value 
+ `PORT`            Port on which the server runs              `3000`           
+ `DB_PATH`         Location of the SQLite database            `./data.db`       
+
+### Production Configuration
+
+Before deploying, make sure to set secure values for:
+
+```bash
+STAFF_PASSWORD=your-secure-password
+JWT_SECRET=your-long-random-secret
+PORT=3000
+DB_PATH=./data.db
+```
+
+**Do not deploy the application using the default `STAFF_PASSWORD` or placeholder `JWT_SECRET`.**
+
+---
+
+## Attendee Import
+
+Attendee lists can be imported in two ways:
+
+### Excel or CSV Upload
+
+The dashboard supports:
+
+```text
+.xlsx
+.csv
+```
+
+Files are parsed directly in the browser using **SheetJS**, so the backend does not need to handle uploaded files.
+
+### Paste Data
+
+Attendee rows can also be pasted directly into the dashboard.
+
+Both methods use the same backend import endpoint:
+
+```text
+/api/staff/attendees/import
+```
+
+Duplicate phone numbers are automatically skipped during import.
+
+---
+
+## Capacity Management
+
+The application includes an attendee capacity limit.
+
+The default capacity is:
+
+```text
+140 attendees
+```
+
+The capacity can be edited from the dashboard.
+
+Capacity restrictions are enforced at both levels:
+
+* Frontend/UI
+* Backend/server
+
+This prevents attendees from being added or imported after the configured capacity has been reached.
+
+---
+
+## Search & Filtering
+
+Staff can search the attendee list using:
+
+* Name
+* Phone number
+* Email address
+
+The list can also be filtered by check-in status.
+
+This allows staff to quickly identify attendees who have or have not checked in.
+
+---
+
+## Exporting Attendees
+
+The current attendee list can be exported from the dashboard with a single click.
+
+The exported file is provided in:
+
+```text
+.xlsx
+```
+
+format.
+
+---
+
