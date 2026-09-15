@@ -1,0 +1,16 @@
+{
+  "name": "learning-event-registration",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Attendee import & check-in tool for the in-house learning event (mirrors TMF staff dashboard structure)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
