@@ -126,15 +126,3 @@ Response:
 ```
 Returns `{ "deleted": 2 }`.
 
-## What was intentionally left out (vs. TMF's real system)
-
-- No delegate/exhibitor/volunteer/media categories — flat list, one form.
-- No self-service public registration form — attendees only enter the
-  system via Add Attendee or Import.
-- No signature capture or bank-account verification (that was for TMF's
-  per-day stipend payouts — not relevant here).
-- No multi-day event schedule / Day 1 vs Day 2 split.
-- No per-staff-member accounts — one shared password.
-
-If any of these turn out to be needed after all, they're additive and
-won't require changing what's already built.
