@@ -1,0 +1,3065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>YEAR 2 LEARNING EVENT — Registrations</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --ink:#211712;
+    --ink-soft:#6B5A4E;
+    --paper:#ffffff;
+    --panel:#FFFFFF;
+    --border:#E8DCCB;
+    --header-bg:#fffefc;
+    --accent:#FA9411;
+    --accent-dark:#C96F05;
+    --accent-soft:#FDE9CF;
+    --good:#1F1A16;
+    --good-soft:#EDE8E1;
+    --bad:#E12900;
+    --bad-soft:#FCE0D6;
+    --muted:#948B80;
+    font-family:-apple-system,BlinkMacSystemFont,"Inter",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    padding:0;
+    height:100%;
+  }
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+  }
+
+  .wrap{
+    max-width:1400px;
+    margin:0 auto;
+    padding:28px 32px;
+  }
+
+  .header{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-top:3px solid var(--accent);
+    border-radius:16px;
+    padding:22px 26px;
+    margin-bottom:18px;
+  }
+  .header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+
+ .event-brand{
+  display:flex;
+  align-items:center;
+  margin-bottom:16px;
+  width:180px;
+  height:50px;
+}
+
+.event-logo{
+  display:block;
+  width:180px;
+  height:50px;
+  object-fit:contain;
+}
+
+
+  .title-input{
+    font-size:20px;
+    font-weight:700;
+    border:none;
+    background:transparent;
+    color:var(--ink);
+    padding:2px 0;
+    width:100%;
+    max-width:440px;
+    letter-spacing:-.01em;
+  }
+
+  .title-input:focus{
+    outline:none;
+    border-bottom:1px solid var(--accent);
+  }
+
+  .date-input{
+    border:none;
+    background:transparent;
+    color:var(--ink-soft);
+    font-size:13px;
+    margin-top:4px;
+    padding:2px 0;
+  }
+  .date-input:focus{
+    outline:none;
+    border-bottom:1px solid var(--accent);
+  }
+  .actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:var(--ink);
+    padding:9px 14px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .btn:hover{
+    border-color:var(--ink-soft);
+  }
+  .btn-primary{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  .btn-primary:hover{
+    background:var(--accent-dark);
+    border-color:var(--accent-dark);
+  }
+  .btn-primary:disabled{
+    background:var(--muted);
+    border-color:var(--muted);
+    cursor:not-allowed;
+  }
+  .btn-danger{
+    color:var(--bad);
+    border-color:var(--bad-soft);
+  }
+
+  .btn-danger:hover{
+    background:var(--bad-soft);
+  }
+
+  .capacity-row{
+    margin-top:18px;
+  }
+  .capacity-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+
+  .capacity-track{
+    height:8px;
+    background:var(--header-bg);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .capacity-fill{
+    height:100%;
+    background:var(--accent);
+    transition:width .3s ease;
+  }
+
+  .capacity-fill.full{
+    background:var(--bad);
+  }
+  .banner{
+    margin-bottom:16px;
+    padding:11px 16px;
+    border-radius:10px;
+    font-size:13.5px;
+    font-weight:600;
+  }
+
+  .banner-warn{
+    background:var(--bad-soft);
+    color:var(--bad);
+  }
+
+  .banner-info{
+    background:var(--accent-soft);
+    color:var(--accent-dark);
+  }
+
+  .stats{
+    display:flex;
+    gap:14px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+    color:rgb(212, 18, 4);
+  }
+    
+
+ .stat{
+  background:var(--header-bg);
+  border:1px solid var(--border);
+  border-top:3px solid purple;
+  border-radius:12px;
+  padding:14px 18px;
+  min-width:150px;
+  flex:1;
+  box-shadow:5px 5px 6px 4px rgba(175, 175, 153, 0.322);
+
+}
+
+.stat.stat-total{
+  border-top-color: #E12900;
+}
+
+.stat.stat-in{
+  border-top-color:#1F1A16;
+}
+.stat.stat-out{
+  border-top-color:#FA9411;
+}
+  
+  .stat-label{
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:4px;
+  }
+
+  .stat-value{
+    font-size:24px;
+    font-weight:700;
+  }
+  .stat-value.good{
+    color:var(--good);
+  }
+  .stat-value.bad{
+    color:var(--bad);
+  }
+  .controls{
+    display:flex;
+    gap:10px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+  }
+
+  .search-wrap{
+    position:relative;
+    flex:1;
+    max-width:1500px;
+    min-width:200px;
+  }
+
+  .search{
+    width:100%;
+    box-sizing:border-box;
+    padding:10px 40px 10px 14px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:13.5px;
+    background:var(--header-bg);
+  }
+
+  .search:focus{
+    outline:none;
+    border-color:var(--accent);
+    background:var(--panel);
+  }
+
+  .search-clear{
+    position:absolute;
+    right:8px;
+    top:50%;
+    transform:translateY(-50%);
+    width:28px;
+    height:28px;
+    border:0;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:transparent;
+    color:var(--muted);
+    font-size:20px;
+    line-height:1;
+    cursor:pointer;
+    padding:0;
+  }
+
+  .search-clear:hover{
+    background:var(--accent-soft);
+    color:var(--ink);
+  }
+
+  .chips{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .chip{
+    padding:9px 14px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--header-bg);
+    color:var(--ink-soft);
+    font-size:12.5px;
+    font-weight:600;
+    cursor:pointer;
+  }
+
+  .chip.active{background:var(--accent);
+    color:#fff;border-color:var(--accent);
+  }
+
+  .list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .row{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px 18px;
+  }
+  .row-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;flex-wrap:wrap;
+  }
+
+  .row-name{
+    font-size:14.5px;
+    font-weight:700;
+  }
+  .row-meta{font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:3px;
+  }
+
+  .row-meta span+span::before{
+    content:" · ";color:var(--muted);
+  }
+  .attendee-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.attendee-details {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1.4fr 0.9fr;
+  gap: 20px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--header-bg);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.detail-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: black;
+}
+
+.detail-value {
+  font-size: 12px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.attendance-info {
+  display: flex;
+  gap: 18px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.attendance-info span + span::before {
+  content: " · ";
+  color: var(--muted);
+  margin-right: 8px;
+}
+
+.signature-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.signature-badge.signed {
+  background: #c4fcde;
+  color: #1b6b4a;
+}
+
+.signature-badge.not-signed {
+  background: var(--header-bg);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:5px 11px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+    white-space:nowrap;
+    
+  }
+
+.badge.in{
+  background:#c4fcde;
+  color:#000000;
+}
+
+.badge.out{
+  background:var(--bad-soft);
+  color:var(--bad);
+}
+.badge-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+}
+.badge.in .badge-dot{
+  background:#58C597;
+}
+
+.badge.out .badge-dot{
+  background:var(--bad);
+}
+
+  .row-actions{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid var(--header-bg);
+  }
+
+  .row-btn{
+    border:1px solid var(--border);
+    background:var(--header-bg);
+    padding:7px 13px;
+    border-radius:9px;
+    font-size:12.5px;
+    font-weight:600;
+    cursor:pointer;
+    color:var(--ink);
+  }
+
+  .row-btn.state-out{
+    background:#FA9411;
+    border-color:#FFBC6E;
+    color:#141413;
+  }
+
+  .row-btn.state-out:hover{
+    background:#FFAD4D;
+  }
+
+  .row-btn.state-in{
+    background:#ff9595;
+    border-radius: 12px;
+    color:#1c1d1d;
+  
+  }
+
+  .row-btn.state-in:hover{
+    background:#fa6d6d;
+  }
+
+  .row-btn.delete{
+    color:var(--bad);
+  }
+
+  .row-btn.delete:hover{
+    background:var(--bad-soft);
+  }
+
+  
+
+  .empty{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--muted);
+  }
+  .empty-title{
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--ink-soft);
+    margin-bottom:4px;
+  }
+  .modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(33,23,18,.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:50;
+  padding:16px;
+  overflow-y:auto;
+  box-sizing:border-box;
+}
+
+.modal{
+  background:var(--panel);
+  border-radius:16px;
+  padding:22px;
+  width:100%;
+  max-width:420px;
+  max-height:calc(100vh - 32px);
+  overflow-y:auto;
+  box-sizing:border-box;
+}
+
+.modal.wide{
+  max-width:560px;
+}
+ .modal h3{
+  margin-top:0;
+}
+
+.modal-actions{
+  position:sticky;
+  bottom:0;
+  background:var(--panel);
+  padding-top:12px;
+}
+
+  .modal p.sub{
+    margin:0 0 18px 0;
+    color:var(--muted);
+    font-size:12.5px;
+  }
+
+  .field{
+    margin-bottom:14px;
+  }
+  .field label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    color:var(--ink-soft);
+    margin-bottom:5px;
+  }
+
+    .field input, .field textarea, .field select{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid var(--border);
+      border-radius:9px;
+      font-size:13.5px;
+      background:var(--header-bg);
+      color:var(--ink);
+    }
+
+  .field textarea{
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    min-height:140px;
+    resize:vertical;
+  }
+    .field input:focus, .field textarea:focus, .field select:focus{
+      outline:none;
+      border-color:var(--accent);
+      background:#fff;
+    }
+.optional{
+  color:var(--muted);
+  font-weight:400;
+  font-size:12px;
+}
+
+  .form-alert{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin:0 0 16px 0;
+    padding:11px 12px;
+    border:1px solid #F2B7A7;
+    border-left:4px solid var(--bad);
+    border-radius:10px;
+    background:var(--bad-soft);
+    color:var(--bad);
+    font-size:12.5px;
+    font-weight:600;
+    line-height:1.45;
+  }
+
+  .form-alert-icon{
+    flex:0 0 20px;
+    width:20px;
+    height:20px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:var(--bad);
+    color:#fff;
+    font-size:12px;
+    font-weight:800;
+  }
+
+  .form-section-title{
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--accent-dark);
+    margin:20px 0 10px 0;
+    padding-top:14px;
+    border-top:1px solid var(--header-bg);
+  }
+
+  .form-section-title:first-of-type{
+    margin-top:4px;
+    padding-top:0;
+    border-top:none;
+  }
+
+  .field-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+
+  .field-full{
+    grid-column:1 / -1;
+  }
+
+  .field input:read-only{
+    background:#F1EEE8;
+    color:var(--ink-soft);
+  }
+
+  .bank-search-wrap{
+    position:relative;
+  }
+
+  .bank-search-wrap label{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .bank-search-wrap label::after{
+    content:'Search to find your bank';
+    font-size:10px;
+    font-weight:500;
+    color:var(--muted);
+    text-transform:none;
+    letter-spacing:0;
+  }
+
+  .bank-dropdown{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:calc(100% + 8px);
+    z-index:100;
+    max-height:230px;
+    overflow-y:auto;
+    padding:6px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    box-shadow:0 12px 28px rgba(33,23,18,0.18);
+  }
+
+  .bank-option{
+    padding:11px 12px;
+    min-height:42px;
+    display:flex;
+    align-items:center;
+    border-radius:8px;
+    font-size:13px;
+    cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+
+  .bank-option:hover{
+    background:var(--accent-soft);
+    color:var(--accent-dark);
+  }
+
+  #f-bank-search{
+    padding-right:38px;
+    background:#fff;
+    border-color:var(--border);
+    box-shadow:inset 0 0 0 1px rgba(250,148,17,.03);
+  }
+
+  #f-bank-search:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(250,148,17,.12);
+  }
+
+  .bank-details-card{
+    background:linear-gradient(180deg,#fffdf9 0%,#fff 100%);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px;
+    margin-top:2px;
+  }
+
+  .bank-details-card .field{
+    margin-bottom:12px;
+  }
+
+  .bank-details-card .field:last-child{
+    margin-bottom:0;
+  }
+
+  .bank-account-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+
+  .bank-status{
+    min-height:18px;
+    margin-top:2px;
+    padding:7px 9px;
+    border-radius:8px;
+    background:var(--header-bg);
+  }
+
+  .bank-status.verifying{
+    color:var(--accent-dark);
+  }
+  .bank-status.verified{
+    color:#0E3D2A;
+    font-weight:700;
+  }
+  .bank-status.error{
+    color:var(--bad);
+  }
+
+  .file-drop{
+    border:2px dashed var(--border);
+    border-radius:10px;
+    padding:20px;
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:14px;
+    background:var(--header-bg);
+    cursor:pointer;
+  }
+  .file-drop:hover{
+    border-color:var(--accent);
+  }
+  .hint{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+
+  .import-summary{
+    background:var(--good-soft);
+    color:var(--good);
+    border-radius:9px;
+    padding:11px 14px;
+    font-size:13px;
+    margin-top:12px;
+  }
+
+  .import-summary.issues{
+    background:var(--accent-soft);
+    color:var(--accent-dark);
+  }
+  .modal-actions{display:flex;
+    gap:10px;
+    justify-content:flex-end;
+    margin-top:18px;
+  }
+
+  .error-text{
+    color:var(--bad);
+    font-size:12px;
+    margin-top:10px;
+  }
+
+  .loading{
+    padding:60px;
+    text-align:center;
+    color:var(--muted);
+  }
+
+
+/* Tablets / small laptops */
+@media (max-width: 900px){
+
+  .wrap{
+    padding:20px;
+  }
+
+  .header{
+    padding:20px;
+  }
+
+  .header-top{
+    gap:14px;
+  }
+
+  .title-input{
+    font-size:28px;
+    max-width:100%;
+  }
+
+  .actions{
+    width:100%;
+  }
+
+  .field-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .attendee-details{
+    grid-template-columns:1fr 1.5fr 1fr;
+    gap:14px;
+  }
+
+  .row-top{
+    gap:10px;
+  }
+
+  .modal.wide{
+    max-width:680px;
+  }
+}
+
+@media (max-width: 600px){
+
+  html,
+  body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+
+  body{
+    font-size:14px;
+  }
+
+
+  .wrap{
+    width:100%;
+    padding:12px;
+  }
+
+  .header{
+    padding:16px;
+    border-radius:13px;
+    margin-bottom:14px;
+  }
+
+  .header-top{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:14px;
+  }
+
+  .title-input{
+    width:100%;
+    max-width:100%;
+    font-size:23px;
+    line-height:1.25;
+  }
+
+  .date-input{
+    width:100%;
+    font-size:12px;
+  }
+
+  .actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    width:100%;
+    gap:8px;
+  }
+
+  .actions .btn{
+    width:100%;
+    justify-content:center;
+    min-height:42px;
+    padding:9px 10px;
+  }
+
+  .actions .btn-primary{
+    grid-column:1 / -1;
+  }
+
+
+  .capacity-row{
+    margin-top:16px;
+  }
+
+  .capacity-label{
+    font-size:11.5px;
+  }
+
+
+  .banner{
+    margin-bottom:12px;
+    padding:10px 12px;
+    font-size:12.5px;
+  }
+
+  .stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-bottom:12px;
+  }
+
+  .stat{
+    min-width:0;
+    padding:12px;
+  }
+
+  .stat:first-child{
+    grid-column:1 / -1;
+  }
+
+  .stat-label{
+    font-size:10.5px;
+  }
+
+  .stat-value{
+    font-size:21px;
+  }
+
+
+
+  .controls{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    margin-bottom:12px;
+  }
+
+  .search{
+    width:100%;
+    min-width:0;
+    max-width:none;
+    padding:11px 12px;
+    font-size:14px;
+  }
+
+  .chips{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:6px;
+  }
+
+  .chip{
+    width:100%;
+    padding:9px 5px;
+    font-size:11px;
+    text-align:center;
+  }
+
+  .list{
+    gap:8px;
+  }
+
+  .row{
+    padding:14px;
+    border-radius:12px;
+  }
+
+  .row-top{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+  }
+
+  .attendee-info{
+    width:100%;
+    min-width:0;
+    overflow:hidden;
+  }
+
+  .row-name{
+    font-size:14px;
+    line-height:1.35;
+  }
+
+  /*
+     Keep your preferred attendee
+     information layout readable on mobile.
+     The details can scroll horizontally.
+  */
+
+  .attendee-details{
+    display:grid;
+    grid-template-columns:105px 190px 90px 150px 105px;
+    gap:14px;
+    width:max-content;
+    min-width:100%;
+    margin-top:12px;
+    padding-top:10px;
+    overflow:visible;
+  }
+
+  .detail-item{
+    min-width:0;
+  }
+
+  .detail-label{
+    font-size:9.5px;
+  }
+
+  .detail-value{
+    max-width:180px;
+    font-size:11.5px;
+  }
+
+  .attendance-info{
+    flex-wrap:wrap;
+    gap:6px 12px;
+    font-size:11px;
+  }
+
+  .badge{
+    align-self:flex-start;
+    font-size:11px;
+    padding:5px 9px;
+  }
+
+
+  .row-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:6px;
+    margin-top:10px;
+    padding-top:10px;
+  }
+
+  .row-btn{
+    width:100%;
+    min-height:40px;
+    padding:7px 5px;
+    font-size:11.5px;
+  }
+
+  .modal-overlay{
+  position:fixed;
+  inset:0;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow-y:auto;
+  box-sizing:border-box;
+}
+
+.modal,
+.modal.wide{
+  width:100%;
+  max-width:620px;
+  max-height:calc(100vh - 24px);
+  margin:auto;
+  padding:18px 16px;
+  border-radius:16px;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  box-sizing:border-box;
+}
+  .modal h3{
+    font-size:17px;
+  }
+
+  .modal p.sub{
+    font-size:12px;
+    margin-bottom:15px;
+  }
+
+
+  .form-section-title{
+    font-size:10.5px;
+    margin-top:17px;
+    margin-bottom:9px;
+  }
+
+  .field-grid{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .field-full{
+    grid-column:auto;
+  }
+
+  .field{
+    width:100%;
+    margin-bottom:12px;
+  }
+
+  .field label{
+    font-size:11.5px;
+  }
+
+  .field input,
+  .field textarea,
+  .field select{
+    width:100%;
+    min-height:44px;
+    padding:10px 11px;
+    font-size:16px;
+  }
+
+  .field textarea{
+    min-height:100px;
+  }
+
+  .bank-dropdown{
+    max-height:200px;
+    overflow-y:auto;
+    bottom:calc(100% + 7px);
+  }
+
+  .bank-option{
+    padding:11px 12px;
+    min-height:42px;
+  }
+
+  .bank-details-card{
+    padding:12px;
+    border-radius:12px;
+  }
+
+  .bank-account-row{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .bank-search-wrap label::after{
+    display:none;
+  }
+
+  .modal-actions{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  margin-top:18px;
+  position:sticky;
+  bottom:0;
+  background:var(--panel);
+  padding-top:12px;
+  z-index:5;
+}
+
+  .modal-actions .btn{
+    width:100%;
+    min-height:44px;
+    justify-content:center;
+  }
+
+  #import-overlay .modal,
+  #sign-overlay .modal{
+    max-height:92vh;
+  }
+
+  .file-drop{
+    padding:18px 12px;
+  }
+
+  #signature-canvas{
+    width:100% !important;
+    height:auto !important;
+    min-height:160px;
+    touch-action:none;
+  }
+
+
+  .empty{
+    padding:45px 15px;
+  }
+}
+
+
+@media (max-width: 380px){
+
+  .wrap{
+    padding:9px;
+  }
+
+  .header{
+    padding:13px;
+  }
+
+  .title-input{
+    font-size:21px;
+  }
+
+  .actions{
+    grid-template-columns:1fr;
+  }
+
+  .actions .btn-primary{
+    grid-column:auto;
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .stat:first-child{
+    grid-column:auto;
+  }
+
+  .chips{
+    grid-template-columns:1fr;
+  }
+
+  .row-actions{
+    grid-template-columns:1fr;
+  }
+
+  .modal,
+  .modal.wide{
+    padding:16px 13px;
+  }
+
+  .modal-actions{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="wrap" id="app"><div class="loading">Loading registrations…</div></div>
+
+  <script>
+  (function(){
+    const API_BASE = "/api";
+    let token = localStorage.getItem('staff_token');
+    if(!token){
+      window.location.href = '/login.html?next=' + encodeURIComponent(window.location.pathname);
+      return;
+    }
+
+    const CAPACITY_DEFAULT = 170;
+
+    const NIGERIAN_STATES = ["FCT (Abuja)", "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
+   const REQUIRED_FOR_CHECKIN = ['name','phone','gender','ageRange','state','lga','designation','address','bankName','accountNumber'];
+const REQUIRED_LABELS = {
+  name:'Full name', phone:'Phone number', gender:'Gender', ageRange:'Age range',
+  state:'State', lga:'LGA', designation:'Designation', address:'Address',
+  bankName:'Bank', accountNumber:'Account number'
+};
+
+function isProfileComplete(a){
+  return !!a && REQUIRED_FOR_CHECKIN.every(f => String(a[f] || '').trim() !== '');
+}
+
+function missingFieldLabels(a){
+  if(!a) return Object.values(REQUIRED_LABELS);
+  return REQUIRED_FOR_CHECKIN
+    .filter(f => String(a[f] || '').trim() === '')
+    .map(f => REQUIRED_LABELS[f]);
+}
+    const NIGERIA_LGAS = {
+  "FCT (Abuja)": ["Abaji","Abuja Municipal (AMAC)","Bwari","Gwagwalada","Kuje","Kwali"],
+  "Abia": ["Aba North","Aba South","Arochukwu","Bende","Ikwuano","Isiala Ngwa North","Isiala Ngwa South","Isuikwuato","Obi Ngwa","Ohafia","Osisioma Ngwa","Ugwunagbo","Ukwa East","Ukwa West","Umuahia North","Umuahia South","Umu Nneochi"],
+  "Adamawa": ["Demsa","Fufure","Ganye","Gayuk","Gombi","Grie","Hong","Jada","Lamurde","Madagali","Maiha","Mayo-Belwa","Michika","Mubi North","Mubi South","Numan","Shelleng","Song","Toungo","Yola North","Yola South"],
+  "Akwa Ibom": ["Abak","Eastern Obolo","Eket","Esit Eket","Essien Udim","Etim Ekpo","Etinan","Ibeno","Ibesikpo Asutan","Ibiono Ibom","Ika","Ikono","Ikot Abasi","Ikot Ekpene","Ini","Itu","Mbo","Mkpat Enin","Nsit Atai","Nsit Ibom","Nsit Ubium","Obot Akara","Okobo","Onna","Oron","Oruk Anam","Udung Uko","Ukanafun","Uruan","Urue-Offong/Oruko","Uyo"],
+  "Anambra": ["Aguata","Anambra East","Anambra West","Anaocha","Awka North","Awka South","Ayamelum","Dunukofia","Ekwusigo","Idemili North","Idemili South","Ihiala","Njikoka","Nnewi North","Nnewi South","Ogbaru","Onitsha North","Onitsha South","Orumba North","Orumba South","Oyi"],
+  "Bauchi": ["Alkaleri","Bauchi","Bogoro","Damban","Darazo","Dass","Gamawa","Ganjuwa","Giade","Itas/Gadau","Jama'are","Katagum","Kirfi","Misau","Ningi","Shira","Tafawa Balewa","Toro","Warji","Zaki"],
+  "Bayelsa": ["Brass","Ekeremor","Kolokuma/Opokuma","Nembe","Ogbia","Sagbama","Southern Ijaw","Yenagoa"],
+  "Benue": ["Ado","Agatu","Apa","Buruku","Gboko","Guma","Gwer East","Gwer West","Katsina-Ala","Konshisha","Kwande","Logo","Makurdi","Obi","Ogbadibo","Ohimini","Oju","Okpokwu","Otukpo","Tarka","Ukum","Ushongo","Vandeikya"],
+  "Borno": ["Abadam","Askira/Uba","Bama","Bayo","Biu","Chibok","Damboa","Dikwa","Gubio","Guzamala","Gwoza","Hawul","Jere","Kaga","Kala/Balge","Konduga","Kukawa","Kwaya Kusar","Mafa","Magumeri","Maiduguri","Marte","Mobbar","Monguno","Ngala","Nganzai","Shani"],
+  "Cross River": ["Abi","Akamkpa","Akpabuyo","Bakassi","Bekwarra","Biase","Boki","Calabar Municipal","Calabar South","Etung","Ikom","Obanliku","Obubra","Obudu","Odukpani","Ogoja","Yakuur","Yala"],
+  "Delta": ["Aniocha North","Aniocha South","Bomadi","Burutu","Ethiope East","Ethiope West","Ika North East","Ika South","Isoko North","Isoko South","Ndokwa East","Ndokwa West","Okpe","Oshimili North","Oshimili South","Patani","Sapele","Udu","Ughelli North","Ughelli South","Ukwuani","Uvwie","Warri North","Warri South","Warri South West"],
+  "Ebonyi": ["Abakaliki","Afikpo North","Afikpo South","Ebonyi","Ezza North","Ezza South","Ikwo","Ishielu","Ivo","Izzi","Ohaozara","Ohaukwu","Onicha"],
+  "Edo": ["Akoko-Edo","Egor","Esan Central","Esan North-East","Esan South-East","Esan West","Etsako Central","Etsako East","Etsako West","Igueben","Ikpoba-Okha","Orhionmwon","Oredo","Ovia North-East","Ovia South-West","Owan East","Owan West","Uhunmwonde"],
+  "Ekiti": ["Ado Ekiti","Efon","Ekiti East","Ekiti South-West","Ekiti West","Emure","Gbonyin","Ido Osi","Ijero","Ikere","Ikole","Ilejemeje","Irepodun/Ifelodun","Ise/Orun","Moba","Oye"],
+  "Enugu": ["Aninri","Awgu","Enugu East","Enugu North","Enugu South","Ezeagu","Igbo Etiti","Igbo Eze North","Igbo Eze South","Isi Uzo","Nkanu East","Nkanu West","Nsukka","Oji River","Udenu","Udi","Uzo-Uwani"],
+  "Gombe": ["Akko","Balanga","Billiri","Dukku","Funakaye","Gombe","Kaltungo","Kwami","Nafada","Shongom","Yamaltu/Deba"],
+  "Imo": ["Aboh Mbaise","Ahiazu Mbaise","Ehime Mbano","Ezinihitte","Ideato North","Ideato South","Ihitte/Uboma","Ikeduru","Isiala Mbano","Isu","Mbaitoli","Ngor Okpala","Njaba","Nkwerre","Nwangele","Obowo","Oguta","Ohaji/Egbema","Okigwe","Orlu","Orsu","Oru East","Oru West","Owerri Municipal","Owerri North","Owerri West","Unuimo"],
+  "Jigawa": ["Auyo","Babura","Biriniwa","Birnin Kudu","Buji","Dutse","Gagarawa","Garki","Gumel","Guri","Gwaram","Gwiwa","Hadejia","Jahun","Kafin Hausa","Kaugama","Kazaure","Kiri Kasama","Kiyawa","Maigatari","Malam Madori","Miga","Ringim","Roni","Sule Tankarkar","Taura","Yankwashi"],
+  "Kaduna": ["Birnin Gwari","Chikun","Giwa","Igabi","Ikara","Jaba","Jema'a","Kachia","Kaduna North","Kaduna South","Kagarko","Kajuru","Kaura","Kauru","Kubau","Kudan","Lere","Makarfi","Sabon Gari","Sanga","Soba","Zangon Kataf","Zaria"],
+  "Kano": ["Ajingi","Albasu","Bagwai","Bebeji","Bichi","Bunkure","Dala","Dambatta","Dawakin Kudu","Dawakin Tofa","Doguwa","Fagge","Gabasawa","Garko","Garun Mallam","Gaya","Gezawa","Gwale","Gwarzo","Kabo","Kano Municipal","Karaye","Kibiya","Kiru","Kumbotso","Kunchi","Kura","Madobi","Makoda","Minjibir","Nasarawa","Rano","Rimin Gado","Rogo","Shanono","Sumaila","Takai","Tarauni","Tofa","Tsanyawa","Tudun Wada","Ungogo","Warawa","Wudil"],
+  "Katsina": ["Bakori","Batagarawa","Batsari","Baure","Bindawa","Charanchi","Dan Musa","Dandume","Danja","Daura","Dutsi","Dutsin-Ma","Faskari","Funtua","Ingawa","Jibia","Kafur","Kaita","Kankara","Kankia","Katsina","Kurfi","Kusada","Mai'Adua","Malumfashi","Mani","Mashi","Matazu","Musawa","Rimi","Sabuwa","Safana","Sandamu","Zango"],
+  "Kebbi": ["Aleiro","Arewa Dandi","Argungu","Augie","Bagudo","Birnin Kebbi","Bunza","Dandi","Fakai","Gwandu","Jega","Kalgo","Koko/Besse","Maiyama","Ngaski","Sakaba","Shanga","Suru","Wasagu/Danko","Yauri","Zuru"],
+  "Kogi": ["Adavi","Ajaokuta","Ankpa","Bassa","Dekina","Ibaji","Idah","Igalamela Odolu","Ijumu","Kabba/Bunu","Kogi","Lokoja","Mopa Muro","Ofu","Ogori/Magongo","Okehi","Okene","Olamaboro","Omala","Yagba East","Yagba West"],
+  "Kwara": ["Asa","Baruten","Edu","Ekiti","Ifelodun","Ilorin East","Ilorin South","Ilorin West","Irepodun","Isin","Kaiama","Moro","Offa","Oke Ero","Oyun","Pategi"],
+  "Lagos": ["Agege","Ajeromi-Ifelodun","Alimosho","Amuwo-Odofin","Apapa","Badagry","Epe","Eti Osa","Ibeju-Lekki","Ifako-Ijaiye","Ikeja","Ikorodu","Kosofe","Lagos Island","Lagos Mainland","Mushin","Ojo","Oshodi-Isolo","Shomolu","Surulere"],
+  "Nasarawa": ["Akwanga","Awe","Doma","Karu","Keana","Keffi","Kokona","Lafia","Nasarawa","Nasarawa Egon","Obi","Toto","Wamba"],
+  "Niger": ["Agaie","Agwara","Bida","Borgu","Bosso","Chanchaga","Edati","Gbako","Gurara","Katcha","Kontagora","Lapai","Lavun","Magama","Mariga","Mashegu","Mokwa","Moya","Paikoro","Rafi","Rijau","Shiroro","Suleja","Tafa","Wushishi"],
+  "Ogun": ["Abeokuta North","Abeokuta South","Ado-Odo/Ota","Egbado North (Yewa North)","Egbado South (Yewa South)","Ewekoro","Ifo","Ijebu East","Ijebu North","Ijebu North East","Ijebu Ode","Ikenne","Imeko Afon","Ipokia","Obafemi Owode","Odeda","Odogbolu","Ogun Waterside","Remo North","Shagamu"],
+  "Ondo": ["Akoko North-East","Akoko North-West","Akoko South-West","Akoko South-East","Akure North","Akure South","Ese Odo","Idanre","Ifedore","Ilaje","Ile Oluji/Okeigbo","Irele","Odigbo","Okitipupa","Ondo East","Ondo West","Ose","Owo"],
+  "Osun": ["Aiyedaade","Aiyedire","Atakunmosa East","Atakunmosa West","Boluwaduro","Boripe","Ede North","Ede South","Egbedore","Ejigbo","Ife Central","Ife East","Ife North","Ife South","Ifedayo","Ifelodun","Ila","Ilesa East","Ilesa West","Irepodun","Irewole","Isokan","Iwo","Obokun","Odo Otin","Ola Oluwa","Olorunda","Oriade","Orolu","Osogbo"],
+  "Oyo": ["Afijio","Akinyele","Atiba","Atisbo","Egbeda","Ibadan North","Ibadan North-East","Ibadan North-West","Ibadan South-East","Ibadan South-West","Ibarapa Central","Ibarapa East","Ibarapa North","Ido","Irepo","Iseyin","Itesiwaju","Iwajowa","Kajola","Lagelu","Ogbomosho North","Ogbomosho South","Ogo Oluwa","Olorunsogo","Oluyole","Ona Ara","Orelope","Ori Ire","Oyo East","Oyo West","Saki East","Saki West","Surulere"],
+  "Plateau": ["Barkin Ladi","Bassa","Bokkos","Jos East","Jos North","Jos South","Kanam","Kanke","Langtang North","Langtang South","Mangu","Mikang","Pankshin","Qua'an Pan","Riyom","Shendam","Wase"],
+  "Rivers": ["Abua/Odual","Ahoada East","Ahoada West","Akuku-Toru","Andoni","Asari-Toru","Bonny","Degema","Emuoha","Eleme","Etche","Gokana","Ikwerre","Khana","Obio/Akpor","Ogba/Egbema/Ndoni","Ogu/Bolo","Okrika","Omuma","Opobo/Nkoro","Oyigbo","Port Harcourt","Tai"],
+  "Sokoto": ["Binji","Bodinga","Dange Shuni","Gada","Goronyo","Gudu","Gwadabawa","Illela","Isa","Kebbe","Kware","Rabah","Sabon Birni","Shagari","Silame","Sokoto North","Sokoto South","Tambuwal","Tangaza","Tureta","Wamako","Wurno","Yabo"],
+  "Taraba": ["Ardo Kola","Bali","Donga","Gashaka","Gassol","Ibi","Jalingo","Karim Lamido","Kurmi","Lau","Sardauna","Takum","Ussa","Wukari","Yorro","Zing"],
+  "Yobe": ["Bade","Bursari","Damaturu","Fika","Fune","Geidam","Gujba","Gulani","Jakusko","Karasuwa","Machina","Nangere","Nguru","Potiskum","Tarmuwa","Yunusari","Yusufari"],
+  "Zamfara": ["Anka","Bakura","Birnin Magaji/Kiyaw","Bukkuyum","Bungudu","Gummi","Gusau","Kaura Namoda","Maradun","Maru","Shinkafi","Talata Mafara","Tsafe","Zurmi"]
+};
+
+    const NIGERIAN_BANKS = [
+          { name: "Access Bank", code: "044" },
+          { name: "Access Bank (Diamond)", code: "063" },
+          { name: "ALAT by WEMA", code: "035A" },
+          { name: "Amju Unique MFB", code: "50926" },
+          { name: "Aswof MFB", code: "50117" },
+          { name: "Baines Credit MFB", code: "51229" },
+          { name: "Carbon", code: "565" },
+          { name: "Citibank Nigeria", code: "023" },
+          { name: "Coronation Merchant Bank", code: "307" },
+          { name: "Covenant MFB", code: "551" },
+          { name: "Dot MFB", code: "50162" },
+          { name: "Ecobank Nigeria", code: "050" },
+          { name: "Ekondo Microfinance Bank", code: "562" },
+          { name: "Eyowo", code: "50126" },
+          { name: "Fairmoney Microfinance Bank", code: "51318" },
+          { name: "Fidelity Bank", code: "070" },
+          { name: "Firmus MFB", code: "51314" },
+          { name: "First Bank of Nigeria", code: "011" },
+          { name: "First City Monument Bank (FCMB)", code: "215" },
+          { name: "FSDH Merchant Bank", code: "309" },
+          { name: "Globus Bank", code: "00103" },
+          { name: "GoMoney", code: "50739" },
+          { name: "Guaranty Trust Bank (GTB)", code: "058" },
+          { name: "Hasal MFB", code: "50383" },
+          { name: "Heritage Bank", code: "030" },
+          { name: "HopePSB", code: "120002" },
+          { name: "Ibile Microfinance Bank", code: "51244" },
+          { name: "Infinity MFB", code: "50457" },
+          { name: "Jaiz Bank", code: "301" },
+          { name: "Kadpoly MFB", code: "50502" },
+          { name: "Keystone Bank", code: "082" },
+          { name: "Kuda Bank", code: "50211" },
+          { name: "Links MFB", code: "50549" },
+          { name: "Living Trust MFB", code: "50554" },
+          { name: "Lotus Bank", code: "302" },
+          { name: "Mayfair MFB", code: "50587" },
+          { name: "Mint MFB", code: "50304" },
+          { name: "Moniepoint MFB", code: "50515" },
+          { name: "Nova Merchant Bank", code: "305" },
+          { name: "OPay", code: "999992" },
+          { name: "Optimus Bank", code: "107" },
+          { name: "Paga", code: "100002" },
+          { name: "Page Financials", code: "50744" },
+          { name: "Palmpay", code: "999991" },
+          { name: "Parallex Bank", code: "104" },
+          { name: "Parkway - ReadyCash", code: "311" },
+          { name: "Polaris Bank", code: "076" },
+          { name: "PremiumTrust Bank", code: "105" },
+          { name: "Providus Bank", code: "101" },
+          { name: "QuickFund MFB", code: "50777" },
+          { name: "Rubies MFB", code: "125" },
+          { name: "Safe Haven MFB", code: "51113" },
+          { name: "Signature Bank", code: "106" },
+          { name: "Solid Allianze MFB", code: "50800" },
+          { name: "Stanbic IBTC Bank", code: "214" },
+          { name: "Standard Chartered Bank", code: "068" },
+          { name: "Sterling Bank", code: "232" },
+          { name: "Suntrust Bank", code: "100" },
+          { name: "TAJ Bank", code: "302" },
+          { name: "Titan Trust Bank", code: "102" },
+          { name: "Union Bank of Nigeria", code: "032" },
+          { name: "United Bank for Africa (UBA)", code: "033" },
+          { name: "Unity Bank", code: "215" },
+          { name: "VFD Microfinance Bank", code: "566" },
+          { name: "Wema Bank", code: "035" },
+          { name: "Zenith Bank", code: "057" }
+        ];
+    let state = {
+      loading: true,
+      meta: { name: "YEAR 2 LEARNING EVENT", date: "", capacity: CAPACITY_DEFAULT },
+      items: [],
+      stats: { totalAttendees: 0, checkedInCount: 0, notCheckedInCount: 0 },
+      search: "",
+      filter: "all",
+      modalOpen: false,
+      editingId: null,
+      formError: "",
+      saving: false,
+      importOpen: false,
+      importRows: [],
+      importFileName: "",
+      importSummary: null,
+      signAttendeeId: null,
+      signError: "",
+      bankSearchText: "",
+      bankDropdownOpen: false,
+      selectedBankCode: "",
+      selectedBankName: "",
+      accountNumberValue: "",
+      accountNameValue: "",
+      bankStatus: "",
+      formDraft: null,
+      pendingCheckInId: null
+    };
+    
+
+    const root = document.getElementById('app');
+
+    function esc(str){
+      const d = document.createElement('div');
+      d.innerText = str == null ? "" : str;
+      return d.innerHTML;
+    }
+    function formatTime(iso){
+  if(!iso) return "";
+  try{
+    return new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  }catch(e){ return ""; }
+}
+
+    async function apiFetch(path, opts={}){
+      const res = await fetch(`${API_BASE}${path}`, {
+        ...opts,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          ...(opts.headers || {})
+        }
+      });
+      if(res.status === 401){
+        localStorage.removeItem('staff_token');
+        window.location.href = '/login.html';
+        throw new Error('Unauthorized');
+      }
+      return res;
+    }
+
+    async function loadMeta(){
+      try{
+        const res = await apiFetch('/staff/meta');
+        if(res.ok) state.meta = Object.assign({}, state.meta, await res.json());
+      }catch(e){ console.error(e); }
+    }
+
+    async function loadAttendees(){
+      try{
+        const params = new URLSearchParams();
+        if(state.search.trim()) params.set('search', state.search.trim());
+        if(state.filter === 'in') params.set('checkedIn', 'true');
+        if(state.filter === 'out') params.set('checkedIn', 'false');
+        const res = await apiFetch(`/staff/attendees?${params.toString()}`);
+        if(res.ok){
+          const data = await res.json();
+          state.items = data.items || [];
+          state.stats = data.stats || state.stats;
+        }
+      }catch(e){ console.error(e); }
+    }
+
+    async function saveMeta(){
+      try{ await apiFetch('/staff/meta', { method: 'PUT', body: JSON.stringify(state.meta) }); }
+      catch(e){ console.error(e); }
+    }
+
+function resetBankFormState(editing){
+  state.bankSearchText = editing ? (editing.bankName || "") : "";
+  state.bankDropdownOpen = false;
+  state.selectedBankCode = editing ? (editing.bankCode || "") : "";
+  state.selectedBankName = editing ? (editing.bankName || "") : "";
+  state.accountNumberValue = editing ? (editing.accountNumber || "") : "";
+  state.accountNameValue = editing ? (editing.accountName || "") : "";
+  state.bankStatus = editing && editing.accountName ? "verified" : "";
+}
+    async function refreshAll(){
+      await Promise.all([loadMeta(), loadAttendees()]);
+      render();
+    }
+    function captureFormDraft(){
+  const ids = ['f-name','f-phone','f-email','f-org','f-gender','f-disability','f-age','f-state','f-lga','f-designation','f-address'];
+  const draft = {};
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) draft[id] = el.value;
+  });
+  state.formDraft = Object.assign({}, state.formDraft, draft);
+}
+
+// Bank interactions re-render the modal. Always capture the text fields first so
+// values entered earlier in the form are not lost when the bank UI changes.
+function draftVal(id, fallback){
+  const draft = state.formDraft || {};
+  return draft[id] !== undefined ? draft[id] : fallback;
+}
+
+
+        function render(){
+      if(state.loading){ root.innerHTML = '<div class="loading">Loading registrations…</div>'; return; }
+
+      const total = state.stats.totalAttendees;
+      const checkedIn = state.stats.checkedInCount;
+      const notCheckedIn = state.stats.notCheckedInCount;
+      const capacity = state.meta.capacity || CAPACITY_DEFAULT;
+      const pct = Math.min(100, Math.round((total/capacity)*100));
+      const atCapacity = total >= capacity;
+      const nearCapacity = !atCapacity && (capacity - total) <= 10;
+
+      let banner = "";
+      if(atCapacity) banner = `<div class="banner banner-warn">Capacity reached — ${total}/${capacity} registered.</div>`;
+      else if(nearCapacity) banner = `<div class="banner banner-info">Only ${capacity-total} spot${capacity-total===1?"":"s"} left before capacity.</div>`;
+
+      root.innerHTML = `
+        <div class="header">
+          <div class="event-brand">
+            <img src="assets/tt-logo.png "alt="TracTrac Logo" class="event-logo">
+          </div>
+          <div class="header-top">
+            <div>
+              <input class="title-input" id="name-input" value="${esc(state.meta.name)}" placeholder="Event name" />
+              <br/>
+              <input class="date-input" id="date-input" value="${esc(state.meta.date)}" placeholder="" />
+            </div>
+            <div class="actions">
+              <button class="btn" id="refresh-btn">↻ Refresh</button>
+              <button class="btn" id="export-btn">⇩ Export</button>
+              <button class="btn" id="import-btn" ${atCapacity?"disabled":""}>⇧ Import List</button>
+              <button class="btn btn-primary" id="add-btn" ${atCapacity?"disabled":""}>+ Add Attendee</button>
+              <button class="btn" id="signout-btn">Sign out</button>
+            </div>
+          </div>
+          <div class="capacity-row">
+            <div class="capacity-label">
+              <span>${total} of <input id="capacity-input" value="${esc(capacity)}" style="width:44px;border:none;background:transparent;font-weight:700;color:var(--ink);" /> seats filled</span>
+              <span>${pct}%</span>
+            </div>
+            <div class="capacity-track"><div class="capacity-fill ${atCapacity?'full':''}" style="width:${pct}%"></div></div>
+          </div>
+        </div>
+
+        ${banner}
+
+      <div class="stats">
+            <div class="stat stat-total"><div class="stat-label">Total Registered</div><div class="stat-value">${total}</div></div>
+            <div class="stat stat-out"><div class="stat-label">Not Checked In</div><div class="stat-value bad">${notCheckedIn}</div></div>
+            <div class="stat stat-in"><div class="stat-label">Checked In</div><div class="stat-value good">${checkedIn}</div></div>
+      </div>
+
+        <div class="controls">
+          <div class="search-wrap">
+            <input class="search" id="search-input" placeholder="Search by name, phone, or email…" value="${esc(state.search)}" />
+            ${state.search ? `<button type="button" class="search-clear" id="search-clear" aria-label="Clear search" title="Clear search">×</button>` : ''}
+          </div>
+          <div class="chips">
+            <button class="chip ${state.filter==='all'?'active':''}" data-filter="all">All</button>
+            <button class="chip ${state.filter==='in'?'active':''}" data-filter="in">Checked In</button>
+            <button class="chip ${state.filter==='out'?'active':''}" data-filter="out">Not Checked In</button>
+          </div>
+        </div>
+
+      
+        <div class="list">
+      ${state.items.length === 0 ? `
+    <div class="empty">
+      <div class="empty-title">
+        ${total === 0 ? "No one's on the list yet" : "No matches found"}
+      </div>
+
+      <div>
+        ${
+          total === 0
+            ? "Use Import List to bring in your attendees."
+            : "Try a different name, phone, or email."
+        }
+      </div>
+    </div>
+  ` : state.items.map((a, idx) => `
+    
+    <div class="row">
+
+      <div class="row-top">
+
+        <div class="attendee-info">
+
+          <!-- Attendee Name -->
+          <div class="row-name">
+            ${idx + 1}. ${esc(a.name)}
+          </div>
+
+          <!-- Main Attendee Information -->
+          <div class="attendee-details">
+
+            <div class="detail-item">
+              <span class="detail-label">Phone</span>
+              <span class="detail-value">
+                ${esc(a.phone) || "—"}
+              </span>
+            </div>
+
+            <div class="detail-item">
+              <span class="detail-label">Email</span>
+              <span class="detail-value">
+                ${esc(a.email) || "—"}
+              </span>
+            </div>
+
+            <div class="detail-item">
+              <span class="detail-label">Gender</span>
+              <span class="detail-value">
+                ${esc(a.gender) || "—"}
+              </span>
+            </div>
+
+            <div class="detail-item">
+              <span class="detail-label">Organization</span>
+              <span class="detail-value">
+                ${esc(a.organization) || "—"}
+              </span>
+            </div>
+
+             <div class="detail-item">
+               <span class="detail-label">Signature</span>
+               <span class="signature-badge ${a.hasSignature ? 'signed' : 'not-signed'}">
+                ${a.hasSignature ? '✓ Signed' : 'Not Signed'}
+                </span>
+             </div>
+
+          </div>
+
+        </div>
+
+        <!-- Check-in Status -->
+        <span class="badge ${a.checkedIn ? 'in' : 'out'}">
+          <span class="badge-dot"></span>
+          ${a.checkedIn ? 'Checked In' : 'Not Checked In'}
+        </span>
+
+      </div>
+
+      <!-- Actions -->
+      <div class="row-actions">
+
+        <button
+          class="row-btn ${a.checkedIn ? 'state-in' : 'state-out'}"
+          data-toggle="${a.id}"
+          data-current="${a.checkedIn ? '1' : '0'}"
+        >
+          ${a.checkedIn ? "Check out" : "Check in"}
+        </button>
+
+        <button
+          class="row-btn"
+          data-edit="${a.id}"
+        >
+          Edit
+        </button>
+
+        <button
+          class="row-btn delete"
+          data-delete="${a.id}"
+        >
+          Delete
+        </button>
+
+      </div>
+
+    </div>
+
+  `).join("")}
+</div>
+        </div>
+
+        ${state.modalOpen ? renderModal() : ""}
+        ${state.importOpen ? renderImportModal() : ""}
+        ${state.signAttendeeId ? renderSignModal() : ""}
+      `;
+      attachHandlers();
+    }
+
+      function selectOptions(options, current){
+      return options.map(opt => `<option value="${esc(opt)}" ${current===opt?"selected":""}>${esc(opt)}</option>`).join("");
+    }
+
+    function renderModal(){
+      const editing = state.editingId ? state.items.find(a=>a.id===state.editingId) : null;
+      const genderOptions = ["", "Male", "Female", "Prefer not to say"];
+      const disabilityOptions = ["None", "Visual", "Hearing", "Physical", "Speech", "Cognitive", "Other"];
+      const ageOptions = ["18-35", "36 and above"];
+
+      const filteredBanks = state.bankSearchText
+        ? NIGERIAN_BANKS.filter(b => b.name.toLowerCase().includes(state.bankSearchText.toLowerCase()))
+        : NIGERIAN_BANKS;
+
+      let bankStatusHtml = "";
+      if(state.bankStatus === "verifying") bankStatusHtml = `<div class="bank-status verifying">Verifying account…</div>`;
+      else if(state.bankStatus === "verified") bankStatusHtml = `<div class="bank-status verified">✓ ${esc(state.accountNameValue)}</div>`;
+      else if(state.bankStatus === "error") bankStatusHtml = `<div class="bank-status error">${esc(state.accountNameValue || "Could not verify this account.")}</div>`;
+
+      return `
+        <div class="modal-overlay" id="modal-overlay">
+          <div class="modal wide">
+            <h3>${editing ? "Edit Attendee" : "Add Attendee"}</h3>
+            <p class="sub">${editing ? "Update this person's details." : "Add someone to the list."}</p>
+
+            ${state.formError ? `<div class="form-alert" role="alert"><span class="form-alert-icon">!</span><span>${esc(state.formError)}</span></div>` : ""}
+
+            <div class="form-section-title">Personal Details</div>
+            <div class="field-grid">
+                         <div class="field"><label>Full name *</label><input id="f-name" value="${esc(draftVal('f-name', editing?editing.name:''))}" placeholder="e.g. Amaka Obi" /></div>
+            <div class="field"><label>Phone number *</label><input id="f-phone" type="tel" inputmode="tel" value="${esc(draftVal('f-phone', editing?editing.phone:''))}" placeholder="e.g. 0803 123 4567" /></div>
+            <div class="field"><label>Email <span class="optional">(Optional)</span></label><input id="f-email" value="${esc(draftVal('f-email', editing?editing.email:''))}" placeholder="e.g. amaka@company.com" /></div>
+            <div class="field"><label>Organization</label><input id="f-org" value="${esc(draftVal('f-org', editing?editing.organization:''))}" placeholder="e.g. TracTrac" /></div>
+            <div class="field"><label>Gender</label><select id="f-gender">${selectOptions(genderOptions, draftVal('f-gender', editing?editing.gender:''))}</select></div>
+            <div class="field"><label>Age Range</label><select id="f-age">${selectOptions(ageOptions, draftVal('f-age', editing?editing.ageRange:''))}</select></div>
+            <div class="field"><label>Disability Type</label><select id="f-disability">${selectOptions(disabilityOptions, draftVal('f-disability', editing?editing.disabilityType:'None'))}</select></div>
+            <div class="field"><label>State</label><select id="f-state"><option value="">Select state</option>${selectOptions(NIGERIAN_STATES, draftVal('f-state', editing?editing.state:''))}</select></div>
+            <div class="field"><label>LGA</label>
+              <select id="f-lga">
+                <option value="">${(NIGERIA_LGAS[draftVal('f-state', editing?editing.state:'')] || []).length ? 'Select LGA' : 'Select a state first'}</option>
+                ${selectOptions(NIGERIA_LGAS[draftVal('f-state', editing?editing.state:'')] || [], draftVal('f-lga', editing?editing.lga:''))}
+              </select>
+            </div>
+            <div class="field"><label>Designation</label><input id="f-designation" value="${esc(draftVal('f-designation', editing?editing.designation:''))}" placeholder="e.g. YPIM" /></div>
+            <div class="field field-full"><label>Address</label><input id="f-address" value="${esc(draftVal('f-address', editing?editing.address:''))}" placeholder="e.g. 12 Herbert Macaulay Way, Abuja" /></div>
+            </div>
+
+            <div class="form-section-title">Bank Details</div>
+            <div class="bank-details-card">
+              <div class="field bank-search-wrap">
+                <label>Bank</label>
+                <input id="f-bank-search" autocomplete="off" value="${esc(state.bankSearchText)}" placeholder="Search or select bank" />
+                ${state.bankDropdownOpen ? `
+                  <div class="bank-dropdown" id="bank-dropdown">
+                    ${filteredBanks.length ? filteredBanks.map(b => `<div class="bank-option" data-bank-code="${esc(b.code)}" data-bank-name="${esc(b.name)}">${esc(b.name)}</div>`).join("") : `<div class="bank-option" style="color:var(--muted);cursor:default;">No banks found</div>`}
+                  </div>
+                ` : ""}
+              </div>
+              <div class="bank-account-row">
+                <div class="field"><label>Account Number</label><input id="f-account-number" maxlength="10" inputmode="numeric" value="${esc(state.accountNumberValue)}" placeholder="10-digit NUBAN" /></div>
+                <div class="field"><label>Account Name</label>
+                  <input id="f-account-name" value="${esc(state.accountNameValue)}" placeholder="Auto-filled after verification" readonly />
+                </div>
+              </div>
+              ${bankStatusHtml ? `<div class="field">${bankStatusHtml}</div>` : ""}
+            </div>
+
+            <div class="modal-actions">
+              <button class="btn" id="modal-cancel">Cancel</button>
+              <button class="btn btn-primary" id="modal-save" ${state.saving?"disabled":""}>${state.saving ? "Saving…" : (editing ? "Save Changes" : "Add Attendee")}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    
+    function renderImportModal(){
+      const capacity = state.meta.capacity || CAPACITY_DEFAULT;
+      const remaining = Math.max(0, capacity - state.items.length);
+      return `
+        <div class="modal-overlay" id="import-overlay">
+          <div class="modal wide">
+            <h3>Import List</h3>
+            <p class="sub">${remaining} spot${remaining===1?"":"s"} remaining before the ${capacity} cap.</p>
+            <div class="file-drop" id="file-drop">
+              📄 Click to choose a .xlsx or .csv file<br/>
+              <span class="hint">Columns in this order: Name, Phone, Email, Organization</span>
+              <input type="file" id="file-input" accept=".xlsx,.xls,.csv" style="display:none;" />
+            </div>
+            <p class="hint" style="text-align:center;margin:-6px 0 14px 0;">— or paste rows below —</p>
+            <div class="field">
+              <textarea id="import-textarea" placeholder="Amaka Obi, 0803 123 4567, amaka@company.com, Finance Team"></textarea>
+              <div class="hint">Works with rows copied from Excel (tab-separated) too. Existing phone numbers are skipped automatically.</div>
+            </div>
+            ${state.importFileName ? `<div class="hint">Loaded: <strong>${esc(state.importFileName)}</strong> (${state.importRows.length} row${state.importRows.length===1?"":"s"})</div>` : ""}
+            ${state.importSummary ? `
+              <div class="import-summary ${state.importSummary.skipped>0 ? 'issues' : ''}">
+                Added ${state.importSummary.added}.
+                ${state.importSummary.duplicates>0 ? ` Skipped ${state.importSummary.duplicates} already on the list.` : ""}
+                ${state.importSummary.overCapacity>0 ? ` ${state.importSummary.overCapacity} left out — capacity reached.` : ""}
+                ${state.importSummary.invalid>0 ? ` ${state.importSummary.invalid} row(s) missing a name or phone.` : ""}
+              </div>
+            ` : ""}
+                       <div class="modal-actions">
+              <button class="btn" id="import-cancel">Close</button>
+              <button class="btn btn-primary" id="import-submit">Import</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSignModal(){
+      const attendee = state.items.find(a=>a.id===state.signAttendeeId);
+      return `
+        <div class="modal-overlay" id="sign-overlay">
+          <div class="modal wide">
+            <h3>Sign to Check In</h3>
+            <p class="sub">${attendee ? esc(attendee.name) : 'This attendee'} needs to sign below before check-in can be completed. No signature, no check-in.</p>
+            <canvas id="signature-canvas" width="500" height="200" style="width:100%;height:200px;border:1px dashed var(--border);border-radius:10px;background:#fff;touch-action:none;cursor:crosshair;display:block;"></canvas>
+            ${state.signError ? `<div class="error-text">${esc(state.signError)}</div>` : ""}
+            <div class="modal-actions">
+              <button class="btn" id="sign-clear" type="button">Clear</button>
+              <button class="btn" id="sign-cancel" type="button">Cancel</button>
+              <button class="btn btn-primary" id="sign-confirm" type="button" disabled>Confirm Check-in</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function setupSignaturePad(){
+      const canvas = document.getElementById('signature-canvas');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = '#211712';
+      let drawing = false;
+      let hasDrawn = false;
+      const confirmBtn = document.getElementById('sign-confirm');
+
+      function getPos(e){
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: (e.clientX - rect.left) * (canvas.width / rect.width),
+          y: (e.clientY - rect.top) * (canvas.height / rect.height)
+        };
+      }
+      function start(e){
+        drawing = true;
+        const p = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        e.preventDefault();
+      }
+      function move(e){
+        if(!drawing) return;
+        const p = getPos(e);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+        if(!hasDrawn){ hasDrawn = true; if(confirmBtn) confirmBtn.disabled = false; }
+        e.preventDefault();
+      }
+      function stop(){ drawing = false; }
+
+      canvas.addEventListener('pointerdown', start);
+      canvas.addEventListener('pointermove', move);
+      window.addEventListener('pointerup', stop);
+
+      const clearBtn = document.getElementById('sign-clear');
+      if(clearBtn) clearBtn.addEventListener('click', ()=>{
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        hasDrawn = false;
+        if(confirmBtn) confirmBtn.disabled = true;
+      });
+
+      const cancelBtn = document.getElementById('sign-cancel');
+      if(cancelBtn) cancelBtn.addEventListener('click', ()=>{
+        state.signAttendeeId = null; state.signError = "";
+        render();
+      });
+
+      if(confirmBtn) confirmBtn.addEventListener('click', async ()=>{
+        if(!hasDrawn) return;
+        const dataUrl = canvas.toDataURL('image/png');
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'Checking in…';
+        try{
+          const res = await apiFetch(`/staff/attendees/${state.signAttendeeId}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ checkedIn: true, signatureData: dataUrl })
+          });
+          const data = await res.json();
+          if(!res.ok){
+            state.signError = data.error || 'Something went wrong.';
+            render();
+            return;
+          }
+          state.signAttendeeId = null; state.signError = "";
+          await loadAttendees();
+          render();
+        }catch(e){
+          state.signError = "Network error — please try again.";
+          render();
+        }
+      });
+    }
+
+    async function resolveBankAccount(){
+  if(state.accountNumberValue.length !== 10 || !state.selectedBankCode) return;
+  captureFormDraft();
+  state.bankStatus = "verifying";
+  state.accountNameValue = "";
+  render();
+  try{
+    const res = await apiFetch(`/staff/banks/resolve?accountNumber=${encodeURIComponent(state.accountNumberValue)}&bankCode=${encodeURIComponent(state.selectedBankCode)}`);
+    const data = await res.json();
+    if(!res.ok){
+      state.bankStatus = "error";
+      state.accountNameValue = data.error || "Could not verify this account.";
+      render();
+      return;
+    }
+    state.bankStatus = "verified";
+    state.accountNameValue = data.accountName;
+    render();
+  }catch(e){
+    state.bankStatus = "error";
+    state.accountNameValue = "Network error while verifying.";
+    render();
+  }
+}
+
+    function parsePastedText(text) {
+  const lines = text
+    .split(/\r?\n/)
+    .filter(line => line.trim());
+
+  if (!lines.length) return [];
+
+  // Excel copy/paste normally uses TABs
+  const separator = lines[0].includes('\t') ? '\t' : ',';
+
+  function splitLine(line) {
+    return line
+      .split(separator)
+      .map(value =>
+        String(value || '')
+          .trim()
+          .replace(/^"|"$/g, '')
+      );
+  }
+
+  function normalizeHeader(header) {
+    return String(header || '')
+      .toLowerCase()
+      .replace(/[\s_\-\/]+/g, '')
+      .replace(/[()]/g, '');
+  }
+
+    const aliases = {
+    name: [
+      'name',
+      'fullname', 
+      'attendeename', 
+      'participantname'
+    ],
+    phone: [
+      'phone', 
+      'phonenumber', 
+      'mobile', 
+      'mobilenumber', 
+      'telephone', 
+      'contact', 
+      'contactnumber'
+    ],
+    email: [
+      'email', 
+      'emailaddress', 
+      'mail'
+    ],
+
+    gender: [
+      'gender', 
+      'sex'
+    ],
+    organization: [
+      'organization', 
+      'organisation', 
+      'org', 
+      'company', 
+      'institution'
+    ],
+    disabilityType: [
+      'disability', 
+      'disabilitytype'
+    ],
+    ageRange: [
+      'age', 
+      'agerange'
+    ],
+    accountNumber: [
+      'account', 
+      'accountnumber', 
+      'accountno'
+    ],
+    state: [
+      'state'
+    ],
+    lga: [
+      'lga', 
+      'localgovernmentarea', 
+      'localgovernment', 
+      'location'
+    ],
+    designation: [
+      'designation', 
+      'role', 
+      'jobtitle', 
+      'title'
+    ]
+  };
+
+  const firstRow = splitLine(lines[0]);
+
+  const normalizedHeaders =
+    firstRow.map(normalizeHeader);
+
+  const allAliases =
+    Object.values(aliases).flat();
+
+  const hasHeaders =
+    normalizedHeaders.some(header =>
+      allAliases.includes(header)
+    );
+
+  let columnMap = {};
+  let startIndex = 0;
+
+  if (hasHeaders) {
+
+    normalizedHeaders.forEach((header, index) => {
+
+      for (const [field, names] of Object.entries(aliases)) {
+
+        if (names.includes(header)) {
+          columnMap[field] = index;
+          break;
+        }
+
+      }
+
+    });
+
+    // Skip Excel header row
+    startIndex = 1;
+
+  } else {
+
+    // Default order if there are no headers
+    columnMap = {
+      name: 0,
+      phone: 1,
+      email: 2,
+      gender: 3,
+      organization: 4,
+      disabilityType: 5,
+      ageRange: 6,
+      accountNumber: 7
+    };
+  }
+
+  function getValue(parts, field) {
+
+    const index = columnMap[field];
+
+    if (index === undefined) {
+      return '';
+    }
+
+    return String(parts[index] || '').trim();
+  }
+
+  const rows = [];
+
+  for (let i = startIndex; i < lines.length; i++) {
+
+    const parts = splitLine(lines[i]);
+
+    const name = getValue(parts, 'name');
+    let phone = getValue(parts, 'phone');
+
+    const email = getValue(parts, 'email');
+    const gender = getValue(parts, 'gender');
+    const organization = getValue(parts, 'organization');
+
+    const disabilityType =
+      getValue(parts, 'disabilityType');
+
+    const ageRange =
+      getValue(parts, 'ageRange');
+
+    const accountNumber =
+      getValue(parts, 'accountNumber');
+
+    // If Excel removed the leading 0 from a
+    // Nigerian 11-digit phone number
+    if (/^\d{10}$/.test(phone)) {
+      phone = '0' + phone;
+    }
+
+    // Ignore completely empty rows
+    if (!name && !phone) {
+      continue;
+    }
+
+    const state = getValue(parts, 'state');
+    const lga = getValue(parts, 'lga');
+    const designation = getValue(parts, 'designation');
+
+    rows.push({ 
+      name, 
+      phone, 
+      email, 
+      organization, 
+      gender, 
+      disabilityType, 
+      ageRange, 
+      accountNumber, 
+      state, 
+      lga, 
+      designation 
+    });
+  }
+
+  return rows;
+}
+
+   function parseSheetFile(file) {
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      reject(new Error('No file selected.'));
+      return;
+    }
+
+    if (typeof XLSX === 'undefined') {
+      reject(new Error('Excel reader library (XLSX) did not load.'));
+      return;
+    }
+
+    const fileName = String(file.name || '').toLowerCase();
+    const isCsv = fileName.endsWith('.csv');
+    const reader = new FileReader();
+
+    reader.onerror = () => {
+      reject(new Error('The browser could not read the selected file.'));
+    };
+
+    reader.onload = (e) => {
+      try {
+        let workbook;
+
+        if (isCsv) {
+          workbook = XLSX.read(e.target.result, {
+            type: 'string',
+            raw: false
+          });
+        } else {
+          workbook = XLSX.read(e.target.result, {
+            type: 'array',
+            cellDates: false,
+            raw: false
+          });
+        }
+
+        if (!workbook || !workbook.SheetNames || !workbook.SheetNames.length) {
+          throw new Error('No worksheet was found in the selected file.');
+        }
+
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        if (!sheet) {
+          throw new Error('The first worksheet could not be opened.');
+        }
+
+        const data = XLSX.utils.sheet_to_json(sheet, {
+          header: 1,
+          defval: '',
+          raw: false,
+          blankrows: false
+        });
+
+        if (!data.length) {
+          resolve([]);
+          return;
+        }
+
+        function normalizeHeader(header) {
+          return String(header ?? '')
+            .trim()
+            .toLowerCase()
+            .replace(/&/g, 'and')
+            .replace(/[\s_\-\/\\.]+/g, '')
+            .replace(/[()]/g, '');
+        }
+
+        // These are the actual columns supported by the registration form.
+        // IMPORTANT: location is mapped to address, NOT LGA.
+        const aliases = {
+          name: [
+            'name',
+            'fullname',
+            'attendeename',
+            'participantname',
+            'full_name'
+          ],
+          phone: [
+            'phone',
+            'phonenumber',
+            'mobile',
+            'mobilenumber',
+            'telephone',
+            'contact',
+            'contactnumber',
+            'phone_number'
+          ],
+          email: [
+            'email',
+            'emailaddress',
+            'mail',
+            'email_address'
+          ],
+          gender: [
+            'gender',
+            'sex'
+          ],
+          organization: [
+            'organization',
+            'organisation',
+            'org',
+            'company',
+            'institution',
+            'organisationname',
+            'organizationname'
+          ],
+          disabilityType: [
+            'disability',
+            'disabilitytype'
+          ],
+          ageRange: [
+            'age',
+            'agerange',
+            'agegroup'
+          ],
+          accountNumber: [
+            'account',
+            'accountnumber',
+            'accountno',
+            'account_number'
+          ],
+          state: [
+            'state',
+            'stateofresidence'
+          ],
+          lga: [
+            'lga',
+            'localgovernmentarea',
+            'localgovernment',
+            'localgovernmentareaofresidence'
+          ],
+          designation: [
+            'designation',
+            'role',
+            'jobtitle',
+            'title',
+            'position'
+          ],
+          address: [
+            'address',
+            'location',
+            'residentialaddress',
+            'homeaddress'
+          ]
+        };
+
+        const normalizedAliasSets = Object.fromEntries(
+          Object.entries(aliases).map(([field, names]) => [
+            field,
+            new Set(names.map(normalizeHeader))
+          ])
+        );
+
+        // Find the header row in the first few rows. This makes the importer
+        // tolerant of a title/date row above the actual Excel headers.
+        let headerRowIndex = -1;
+        let columnMap = {};
+        const rowsToCheck = Math.min(data.length, 10);
+
+        for (let r = 0; r < rowsToCheck; r++) {
+          const row = Array.isArray(data[r]) ? data[r] : [];
+          const candidateMap = {};
+
+          row.forEach((cell, index) => {
+            const header = normalizeHeader(cell);
+            if (!header) return;
+
+            for (const [field, names] of Object.entries(normalizedAliasSets)) {
+              if (names.has(header) && candidateMap[field] === undefined) {
+                candidateMap[field] = index;
+                break;
+              }
+            }
+          });
+
+          // Name + phone is enough to confidently identify the header row.
+          // Organization/state/designation also count as useful evidence.
+          const recognized = Object.keys(candidateMap).length;
+          if (recognized >= 2 && (candidateMap.name !== undefined || candidateMap.phone !== undefined)) {
+            headerRowIndex = r;
+            columnMap = candidateMap;
+            break;
+          }
+        }
+
+        // If headers were not detected, preserve the old simple positional format.
+        let startIndex;
+        if (headerRowIndex >= 0) {
+          startIndex = headerRowIndex + 1;
+        } else {
+          columnMap = {
+            name: 0,
+            phone: 1,
+            email: 2,
+            gender: 3,
+            organization: 4,
+            disabilityType: 5,
+            ageRange: 6,
+            accountNumber: 7,
+            state: 8,
+            lga: 9,
+            designation: 10,
+            address: 11
+          };
+          startIndex = 0;
+        }
+
+        function getCellValue(row, field) {
+          const index = columnMap[field];
+          if (index === undefined || !row) return '';
+
+          const value = row[index];
+          if (value === null || value === undefined) return '';
+
+          return String(value).trim();
+        }
+
+        function normalizePhoneValue(value) {
+          let phone = String(value || '').trim();
+          if (!phone) return '';
+
+          // Remove spaces, brackets and hyphens, but keep a leading + if present.
+          phone = phone.replace(/[\s().\-]/g, '');
+
+          // Excel commonly converts 08036587406 to 8036587406.
+          if (/^\d{10}$/.test(phone)) {
+            phone = '0' + phone;
+          }
+
+          // Also handle a Nigerian number stored as +2348036587406.
+          if (/^234\d{10}$/.test(phone)) {
+            phone = '0' + phone.slice(3);
+          }
+
+          return phone;
+        }
+
+        const rows = [];
+
+        for (let i = startIndex; i < data.length; i++) {
+          const row = data[i];
+          if (!Array.isArray(row)) continue;
+
+          const name = getCellValue(row, 'name');
+          const phone = normalizePhoneValue(getCellValue(row, 'phone'));
+
+          // Ignore completely empty rows.
+          if (!name && !phone) continue;
+
+          rows.push({
+            name,
+            phone,
+            email: getCellValue(row, 'email'),
+            organization: getCellValue(row, 'organization'),
+            gender: getCellValue(row, 'gender'),
+            disabilityType: getCellValue(row, 'disabilityType'),
+            ageRange: getCellValue(row, 'ageRange'),
+            accountNumber: getCellValue(row, 'accountNumber'),
+            state: getCellValue(row, 'state'),
+            lga: getCellValue(row, 'lga'),
+            designation: getCellValue(row, 'designation'),
+            address: getCellValue(row, 'address')
+          });
+        }
+
+        resolve(rows);
+      } catch (error) {
+        reject(error);
+      }
+    };
+
+    // CSV is text; Excel files are binary ArrayBuffers.
+    if (isCsv) {
+      reader.readAsText(file);
+    } else {
+      reader.readAsArrayBuffer(file);
+    }
+  });
+}
+
+    function exportToExcel(){
+  const rows = state.items.map((a, i) => ({
+    "S/N": i + 1,
+    "Full Name": a.name || "",
+    "Phone Number": a.phone || "",
+    "Email Address": a.email || "",
+    "Organization": a.organization || "",
+    "Gender": a.gender || "",
+    "Disability Type": a.disabilityType || "",
+    "Age Range": a.ageRange || "",
+    "State": a.state || "",
+    "LGA": a.lga || "",
+    "Designation": a.designation || "",
+    "Address": a.address || "",
+    "Bank Name": a.bankName || "",
+    "Bank Code": a.bankCode || "",
+    "Account Number": a.accountNumber || "",
+    "Account Name": a.accountName || "",
+    "Checked In": a.checkedIn ? "Yes" : "No",
+    "Checked In At": a.checkedInAt
+      ? new Date(a.checkedInAt).toLocaleString()
+      : "",
+    "Checked Out At": a.checkedOutAt
+      ? new Date(a.checkedOutAt).toLocaleString()
+      : "",
+    "Added At": a.addedAt
+      ? new Date(a.addedAt).toLocaleString()
+      : ""
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+
+  ws['!cols'] = [
+    {wch:5},   // S/N
+    {wch:26},  // Full Name
+    {wch:18},  // Phone
+    {wch:28},  // Email
+    {wch:26},  // Organization
+    {wch:12},  // Gender
+    {wch:20},  // Disability
+    {wch:14},  // Age
+    {wch:18},  // State
+    {wch:18},  // LGA
+    {wch:20},  // Designation
+    {wch:35},  // Address
+    {wch:22},  // Bank Name
+    {wch:14},  // Bank Code
+    {wch:18},  // Account Number
+    {wch:25},  // Account Name
+    {wch:14},  // Checked In
+    {wch:22},  // Checked In At
+    {wch:22},  // Checked Out At
+    {wch:22}   // Added At
+  ];
+
+  const wb = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(
+    wb,
+    ws,
+    "Attendees"
+  );
+
+  const safeName = (state.meta.name || "attendees")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-');
+
+  XLSX.writeFile(
+    wb,
+    `${safeName}-attendees.xlsx`
+  );
+}
+function attachStateLgaHandler(){
+  const stateSelect = document.getElementById('f-state');
+
+  if(!stateSelect) return;
+
+  stateSelect.addEventListener('change', e => {
+    captureFormDraft();
+
+    state.formDraft['f-state'] = e.target.value;
+    state.formDraft['f-lga'] = '';
+
+    render();
+
+    // Re-focus the state dropdown after re-render
+    const newStateSelect = document.getElementById('f-state');
+    if(newStateSelect){
+      newStateSelect.focus();
+    }
+  });
+}
+    function attachHandlers(){
+      const nameInput = document.getElementById('name-input');
+      if(nameInput) nameInput.addEventListener('change', async e=>{
+        state.meta.name = e.target.value;
+        await saveMeta();
+      });
+
+      const dateInput = document.getElementById('date-input');
+      if(dateInput) dateInput.addEventListener('change', async e=>{
+        state.meta.date = e.target.value;
+        await saveMeta();
+      });
+
+      const capInput = document.getElementById('capacity-input');
+      if(capInput) capInput.addEventListener('change', async e=>{
+        const val = parseInt(e.target.value, 10);
+        state.meta.capacity = isNaN(val) || val <= 0 ? CAPACITY_DEFAULT : val;
+        await saveMeta();
+        render();
+      });
+
+      const refreshBtn = document.getElementById('refresh-btn');
+      if(refreshBtn) refreshBtn.addEventListener('click', async ()=>{
+        await refreshAll();
+      });
+
+      const exportBtn = document.getElementById('export-btn');
+      if(exportBtn) exportBtn.addEventListener('click', exportToExcel);
+
+      const signoutBtn = document.getElementById('signout-btn');
+      if(signoutBtn) signoutBtn.addEventListener('click', ()=>{
+        localStorage.removeItem('staff_token');
+        window.location.href = '/login.html';
+      });
+
+      const addBtn = document.getElementById('add-btn');
+      if(addBtn) addBtn.addEventListener('click', ()=>{
+        state.modalOpen = true;
+        state.editingId = null;
+        state.pendingCheckInId = null;
+        state.formError = "";
+        state.formDraft = null;
+        resetBankFormState(null);
+        render();
+      });
+
+      const importBtn = document.getElementById('import-btn');
+      if(importBtn) importBtn.addEventListener('click', ()=>{
+        state.importOpen = true;
+        state.importSummary = null;
+        state.importRows = [];
+        state.importFileName = "";
+        render();
+      });
+
+      const searchInput = document.getElementById('search-input');
+      if(searchInput) searchInput.addEventListener('input', async e=>{
+        state.search = e.target.value;
+        await loadAttendees();
+        render();
+        const el = document.getElementById('search-input');
+        if(el){ el.focus(); el.selectionStart = el.selectionEnd = el.value.length; }
+      });
+
+      const searchClear = document.getElementById('search-clear');
+      if(searchClear) searchClear.addEventListener('click', async ()=>{
+        state.search = '';
+        await loadAttendees();
+        render();
+        const el = document.getElementById('search-input');
+        if(el) el.focus();
+      });
+
+      document.querySelectorAll('.chip').forEach(btn=>{
+        btn.addEventListener('click', async ()=>{
+          state.filter = btn.getAttribute('data-filter');
+          await loadAttendees();
+          render();
+        });
+      });
+
+      // Check in / check out
+      document.querySelectorAll('[data-toggle]').forEach(btn=>{
+        btn.addEventListener('click', async ()=>{
+          const id = btn.getAttribute('data-toggle');
+          const isCurrentlyIn = btn.getAttribute('data-current') === '1';
+
+          if(isCurrentlyIn){
+            try{
+              const res = await apiFetch(`/staff/attendees/${id}`, {
+                method:'PATCH',
+                body:JSON.stringify({ checkedIn:false })
+              });
+              const data = await res.json();
+              if(!res.ok){
+                alert(data.error || 'Could not check out this attendee.');
+                return;
+              }
+              await loadAttendees();
+              render();
+            }catch(e){
+              console.error(e);
+              alert('Network error — please try again.');
+            }
+            return;
+          }
+
+          const attendee = state.items.find(x=>x.id===id);
+          if(!isProfileComplete(attendee)){
+            // Open the edit form with the attendee's existing values.
+            state.modalOpen = true;
+            state.editingId = id;
+            state.pendingCheckInId = id;
+            state.formError = "Complete all required fields below before checking in.";
+            state.formDraft = null;
+            resetBankFormState(attendee);
+            render();
+            return;
+          }
+
+          // Profile is already complete: go directly to signature.
+          state.signAttendeeId = id;
+          state.signError = "";
+          render();
+        });
+      });
+
+      // Edit existing attendee. The form is populated from state.items.
+      document.querySelectorAll('[data-edit]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const id = btn.getAttribute('data-edit');
+          const editing = state.items.find(a=>a.id===id);
+          if(!editing) return;
+
+          state.modalOpen = true;
+          state.editingId = id;
+          state.pendingCheckInId = null;
+          state.formError = "";
+          state.formDraft = null;
+          resetBankFormState(editing);
+          render();
+        });
+      });
+
+      // Delete attendee.
+      document.querySelectorAll('[data-delete]').forEach(btn=>{
+        btn.addEventListener('click', async ()=>{
+          const id = btn.getAttribute('data-delete');
+          if(!confirm('Remove this attendee from the list?')) return;
+
+          try{
+            const res = await apiFetch(`/staff/attendees/${id}`, { method:'DELETE' });
+            const data = await res.json();
+            if(!res.ok){
+              alert(data.error || 'Could not remove this attendee.');
+              return;
+            }
+            await loadAttendees();
+            render();
+          }catch(e){
+            console.error(e);
+            alert('Network error — please try again.');
+          }
+        });
+      });
+
+      // Close edit/add modal by clicking the backdrop or Cancel.
+      const overlay = document.getElementById('modal-overlay');
+      if(overlay) overlay.addEventListener('click', e=>{
+        if(e.target === overlay){
+          state.modalOpen = false;
+          state.editingId = null;
+          state.pendingCheckInId = null;
+          state.formDraft = null;
+          state.formError = "";
+          render();
+        }
+      });
+
+      const cancelBtn = document.getElementById('modal-cancel');
+      if(cancelBtn) cancelBtn.addEventListener('click', ()=>{
+        state.modalOpen = false;
+        state.editingId = null;
+        state.pendingCheckInId = null;
+        state.formDraft = null;
+        state.formError = "";
+        render();
+      });
+
+      // Keep the form state synchronized on every keystroke/change.
+      // This prevents any re-render (especially bank search/verification) from
+      // wiping values the user has already entered.
+      const liveFormFields = ['f-name','f-phone','f-email','f-org','f-gender','f-disability','f-age','f-state','f-lga','f-designation','f-address'];
+      liveFormFields.forEach(id=>{
+        const el = document.getElementById(id);
+        if(!el) return;
+        const sync = ()=>{
+          state.formDraft = Object.assign({}, state.formDraft, {[id]: el.value});
+
+          // Remove the check-in warning as soon as all required fields are now complete.
+          if(state.formError){
+            const current = {};
+            liveFormFields.forEach(fieldId=>{
+              const fieldEl = document.getElementById(fieldId);
+              current[fieldId] = fieldEl ? fieldEl.value.trim() : (state.formDraft[fieldId] || '');
+            });
+            const checkinData = {
+              name:current['f-name'], phone:current['f-phone'], email:current['f-email'],
+              gender:current['f-gender'], ageRange:current['f-age'], state:current['f-state'],
+              lga:current['f-lga'], designation:current['f-designation'], address:current['f-address'],
+              bankName:state.selectedBankName || '', accountNumber:state.accountNumberValue || ''
+            };
+            if(isProfileComplete(checkinData)) state.formError = '';
+          }
+        };
+        el.addEventListener('input', sync);
+        el.addEventListener('change', sync);
+      });
+
+      // Keep all typed form values when a state change causes the form to re-render.
+      const stateSelect = document.getElementById('f-state');
+      if(stateSelect) stateSelect.addEventListener('change', e=>{
+        captureFormDraft();
+        state.formDraft['f-state'] = e.target.value;
+        state.formDraft['f-lga'] = '';
+        render();
+      });
+
+      // Bank search.
+      const bankSearchInput = document.getElementById('f-bank-search');
+      if(bankSearchInput){
+        bankSearchInput.addEventListener('focus', ()=>{
+          captureFormDraft();
+          state.bankDropdownOpen = true;
+          render();
+          const el = document.getElementById('f-bank-search');
+          if(el){ el.focus(); el.selectionStart = el.selectionEnd = el.value.length; }
+        });
+
+        bankSearchInput.addEventListener('input', e=>{
+          captureFormDraft();
+          state.bankSearchText = e.target.value;
+          state.bankDropdownOpen = true;
+          render();
+          const el = document.getElementById('f-bank-search');
+          if(el){ el.focus(); el.selectionStart = el.selectionEnd = el.value.length; }
+        });
+      }
+
+      document.querySelectorAll('.bank-option[data-bank-code]').forEach(opt=>{
+        opt.addEventListener('click', ()=>{
+          captureFormDraft();
+          state.selectedBankCode = opt.getAttribute('data-bank-code') || '';
+          state.selectedBankName = opt.getAttribute('data-bank-name') || '';
+          state.bankSearchText = state.selectedBankName;
+          state.bankDropdownOpen = false;
+          state.bankStatus = "";
+          state.accountNameValue = "";
+          if(state.formError){
+            const editing = state.editingId ? state.items.find(a=>a.id===state.editingId) : null;
+            const values = state.formDraft || {};
+            const checkinData = {
+              name:values['f-name'] || (editing && editing.name) || '',
+              phone:values['f-phone'] || (editing && editing.phone) || '',
+              email:values['f-email'] || (editing && editing.email) || '',
+              gender:values['f-gender'] || (editing && editing.gender) || '',
+              ageRange:values['f-age'] || (editing && editing.ageRange) || '',
+              state:values['f-state'] || (editing && editing.state) || '',
+              lga:values['f-lga'] || (editing && editing.lga) || '',
+              designation:values['f-designation'] || (editing && editing.designation) || '',
+              address:values['f-address'] || (editing && editing.address) || '',
+              bankName:state.selectedBankName, accountNumber:state.accountNumberValue
+            };
+            if(isProfileComplete(checkinData)) state.formError = '';
+          }
+          render();
+          if(state.accountNumberValue.length === 10) resolveBankAccount();
+        });
+      });
+
+      document.addEventListener('click', function outsideBankClick(e){
+  if(!e.target.closest('.bank-search-wrap') && state.bankDropdownOpen){
+    state.bankDropdownOpen = false;
+    render();
+  }
+}, { once: true });
+
+      const accountNumberInput = document.getElementById('f-account-number');
+      if(accountNumberInput){
+        accountNumberInput.addEventListener('input', e=>{
+          captureFormDraft();
+          state.accountNumberValue = e.target.value.replace(/\D/g,'').slice(0,10);
+          state.bankStatus = "";
+          state.accountNameValue = "";
+
+          if(state.accountNumberValue.length === 10 && state.selectedBankCode){
+            resolveBankAccount();
+          }else{
+            render();
+            const el = document.getElementById('f-account-number');
+            if(el){ el.focus(); el.selectionStart = el.selectionEnd = el.value.length; }
+          }
+        });
+      }
+      
+
+      // Save Add/Edit form.
+      const saveBtn = document.getElementById('modal-save');
+      if(saveBtn) saveBtn.addEventListener('click', async ()=>{
+        const nameEl = document.getElementById('f-name');
+        const phoneEl = document.getElementById('f-phone');
+        const emailEl = document.getElementById('f-email');
+        const orgEl = document.getElementById('f-org');
+        const genderEl = document.getElementById('f-gender');
+        const disabilityEl = document.getElementById('f-disability');
+        const ageEl = document.getElementById('f-age');
+        const stateEl = document.getElementById('f-state');
+        const lgaEl = document.getElementById('f-lga');
+        const designationEl = document.getElementById('f-designation');
+        const addressEl = document.getElementById('f-address');
+
+        const name = nameEl ? nameEl.value.trim() : '';
+        const phone = phoneEl ? phoneEl.value.trim() : '';
+        const email = emailEl ? emailEl.value.trim() : '';
+        const organization = orgEl ? orgEl.value.trim() : '';
+        const gender = genderEl ? genderEl.value : '';
+        const disabilityType = disabilityEl ? disabilityEl.value : '';
+        const ageRange = ageEl ? ageEl.value : '';
+        const stateVal = stateEl ? stateEl.value : '';
+        const lga = lgaEl ? lgaEl.value.trim() : '';
+        const designation = designationEl ? designationEl.value.trim() : '';
+        const address = addressEl ? addressEl.value.trim() : '';
+
+        if(!name || !phone){
+          state.formError = "Name and phone number are required.";
+          render();
+          return;
+        }
+
+        const payload = {
+          name,
+          phone,
+          email,
+          organization,
+          gender,
+          disabilityType,
+          ageRange,
+          state: stateVal,
+          lga,
+          designation,
+          address,
+          bankName: state.selectedBankName || '',
+          bankCode: state.selectedBankCode || '',
+          accountNumber: state.accountNumberValue || '',
+          accountName: state.accountNameValue || ''
+        };
+
+        const editingId = state.editingId;
+        const pendingCheckInId = state.pendingCheckInId;
+        const returnToCheckIn = !!pendingCheckInId && pendingCheckInId === editingId;
+
+        // Validate everything required for check-in before saving the special Check-In edit.
+        if(returnToCheckIn && !isProfileComplete(payload)){
+          const missing = missingFieldLabels(payload);
+          state.formError = `Still missing: ${missing.join(', ')}`;
+          state.saving = false;
+          render();
+          return;
+        }
+        if(state.accountNumberValue && state.bankStatus !== 'verified'){
+            state.formError = "Please wait for the account number to verify, or clear it.";
+            render();
+            return;
+          }
+        state.saving = true;
+        state.formError = "";
+        render();
+
+        try{
+          let res;
+          if(editingId){
+            res = await apiFetch(`/staff/attendees/${editingId}`, {
+              method:'PATCH',
+              body:JSON.stringify(payload)
+            });
+          }else{
+            res = await apiFetch('/staff/attendees', {
+              method:'POST',
+              body:JSON.stringify(payload)
+            });
+          }
+
+          let data = {};
+          try{
+            data = await res.json();
+          }catch(parseError){
+            data = {};
+          }
+
+          if(!res.ok){
+            state.saving = false;
+            state.formError = data.error || `Could not save attendee (HTTP ${res.status}).`;
+            render();
+            return;
+          }
+
+          // Save succeeded. Update the local attendee immediately so Edit shows
+          // the values that were just saved, then open signature when this came
+          // from the Check-In button.
+          const savedId = editingId || data.id || data._id;
+
+          if(editingId){
+            const index = state.items.findIndex(a=>a.id===editingId);
+            if(index !== -1){
+              state.items[index] = {
+                ...state.items[index],
+                ...payload,
+                id: editingId
+              };
+            }
+          }
+
+          state.saving = false;
+          state.modalOpen = false;
+          state.editingId = null;
+          state.formDraft = null;
+          state.formError = "";
+          state.pendingCheckInId = null;
+
+          if(returnToCheckIn && savedId){
+            state.signAttendeeId = savedId;
+            state.signError = "";
+          }
+
+          // This render immediately displays the signature pad when required.
+          render();
+
+          // Refresh the list after the signature screen is already visible.
+          // Do not let the refresh close/re-render the signature pad.
+          loadAttendees().then(()=>{
+            if(!state.signAttendeeId && !state.modalOpen && !state.importOpen){
+              render();
+            }
+          }).catch(err=>console.error('Background attendee refresh failed:', err));
+
+        }catch(e){
+          console.error('Save attendee error:', e);
+          state.saving = false;
+          state.formError = e && e.message === 'Unauthorized'
+            ? 'Your session has expired. Please sign in again.'
+            : 'Network error — please try again.';
+          render();
+        }
+      });
+
+      // Import modal.
+      const importOverlay = document.getElementById('import-overlay');
+      if(importOverlay) importOverlay.addEventListener('click', e=>{
+        if(e.target === importOverlay){
+          state.importOpen = false;
+          render();
+        }
+      });
+
+      const importCancel = document.getElementById('import-cancel');
+      if(importCancel) importCancel.addEventListener('click', ()=>{
+        state.importOpen = false;
+        render();
+      });
+
+      const fileDrop = document.getElementById('file-drop');
+      const fileInput = document.getElementById('file-input');
+      if(fileDrop && fileInput){
+        fileDrop.addEventListener('click', ()=>fileInput.click());
+        fileInput.addEventListener('change', async ()=>{
+          const file = fileInput.files[0];
+          if(!file) return;
+          try{
+            const rows = await parseSheetFile(file);
+            state.importRows = rows;
+            state.importFileName = file.name;
+            render();
+          }catch(e){
+            alert("Couldn't read that file. " + (e && e.message ? e.message : "Please choose a valid .xlsx, .xls or .csv file."));
+          }
+        });
+      }
+
+      const importTextarea = document.getElementById('import-textarea');
+      if(importTextarea) importTextarea.addEventListener('input', e=>{
+        state.importPastedText = e.target.value;
+      });
+
+      const importSubmit = document.getElementById('import-submit');
+      if(importSubmit) importSubmit.addEventListener('click', async ()=>{
+        const pastedRows = state.importPastedText ? parsePastedText(state.importPastedText) : [];
+        const rows = state.importRows.length ? state.importRows : pastedRows;
+        if(!rows.length){
+          alert("Choose a file or paste some rows first.");
+          return;
+        }
+
+        try{
+          const res = await apiFetch('/staff/attendees/import', {
+            method:'POST',
+            body:JSON.stringify({ rows })
+          });
+          const summary = await res.json();
+          if(!res.ok){
+            alert(summary.error || 'Import failed.');
+            return;
+          }
+          await loadAttendees();
+          state.importSummary = {
+            ...summary,
+            skipped: (summary.duplicates || 0) + (summary.overCapacity || 0) + (summary.invalid || 0)
+          };
+          state.importRows = [];
+          state.importFileName = "";
+          state.importPastedText = "";
+        }catch(e){
+          console.error(e);
+          state.importSummary = {
+            added:0,
+            duplicates:0,
+            overCapacity:0,
+            invalid:rows.length,
+            skipped:rows.length
+          };
+        }
+        render();
+      });
+
+      // Signature modal.
+      const signOverlay = document.getElementById('sign-overlay');
+      if(signOverlay) signOverlay.addEventListener('click', e=>{
+        if(e.target === signOverlay){
+          state.signAttendeeId = null;
+          state.signError = "";
+          render();
+        }
+      });
+
+      if(state.signAttendeeId) setupSignaturePad();
+    }
+    (async function init(){
+      await refreshAll();
+      state.loading = false;
+      render();
+      setInterval(async ()=>{ if(!state.modalOpen && !state.importOpen && !state.signAttendeeId){ await refreshAll(); } }, 15000);
+    })();
+  })();
+  </script>
+</body>
+</html>
